@@ -4,36 +4,47 @@ import os, time, csv, json
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
-driver = webdriver.Chrome()
-url = "https://webcache.googleusercontent.com/search?q=cache:1QWyjnW3Y0EJ:https://www.zillow.com/homedetails/1802-Willowwood-Cir-Harker-Heights-TX-76548/49515512_zpid/+&cd=2&hl=en&ct=clnk&gl=us"
-driver.get(url)
+def getInformation(urls):
+    driver = webdriver.Chrome()
+    results = []
+    for url in tqdm(urls):
+        driver.get(url)
 
-# time.sleep(10)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        for link in soup.find_all("script", id="hdpApolloPreloadedData"):
+            data = (link.text)
 
-# print (driver.page_source)
+        data = json.loads(data)
+        data1 = json.loads(data['apiCache'])
 
-soup = BeautifulSoup(driver.page_source, 'html.parser')
-for link in soup.find_all("script", id="hdpApolloPreloadedData"):
-    data = (link.text)
+        for x in data1.keys():
+            if 'VariantQuery' in x:
+                main = x
+            else:
+                other_main = x
 
-data = json.loads(data)
-data1 = json.loads(data['apiCache'])
+        data1 = json.loads(data['apiCache'])[main]["property"]
 
-for x in data1.keys():
-    if 'VariantQuery' in x:
-        print (x)
-        main = x
-    else:
-        other_main = x
+        data2 = json.loads(data['apiCache'])[other_main]["property"]
 
-data1 = json.loads(data['apiCache'])[main]["property"]
+        description = data2['description']
+        taxAssessedValue = data2['taxAssessedValue']
 
-with open('data.json', 'w') as outfile:
-    json.dump(data1, outfile)
+        averageSchoolRating = 0
+        for x in data2['schools']:
+            averageSchoolRating += x['rating']
+        averageSchoolRating/=len(data2['schools'])
 
-data2 = json.loads(data['apiCache'])[other_main]["property"]
+        payload = data1
+        payload['description'] = description
+        payload['taxAssessedValue'] = taxAssessedValue
+        payload['url'] = url
+        results.append(payload)
+    driver.quit()
+    return results
 
-with open('data1.json', 'w') as outfile:
-    json.dump(data2, outfile)
+urls = [
+    "https://webcache.googleusercontent.com/search?q=cache:1QWyjnW3Y0EJ:https://www.zillow.com/homedetails/1802-Willowwood-Cir-Harker-Heights-TX-76548/49515512_zpid/+&cd=2&hl=en&ct=clnk&gl=us"
+]
 
-# driver.quit()
+print(getInformation(urls))
