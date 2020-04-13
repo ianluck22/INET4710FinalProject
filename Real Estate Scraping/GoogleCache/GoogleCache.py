@@ -5,7 +5,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
-FILE_NUMBER = 0
+FILE_NUMBER = 1
 
 df = pd.read_feather(f"../../datafiles/metroAreaChunks/metroArea{FILE_NUMBER}.ft")
 list_of_addresses = df[df["GoogleCacheLink"] == ""]["property"].to_list()
