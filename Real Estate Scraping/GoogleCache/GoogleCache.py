@@ -14,7 +14,7 @@ driver = webdriver.Chrome()
 
 for address in tqdm(list_of_addresses):
     count_retry = 0
-    time.sleep(10)
+    time.sleep(5)
     while True:
         try:
             count_retry += 1
@@ -25,7 +25,6 @@ for address in tqdm(list_of_addresses):
             for link in soup.find_all('li'):
                 for a in link.find_all('a'):
                     if 'webcache' in a.get('href') and 'zillow' in a.get('href'):
-                        driver.get(a.get('href'))
                         cacheLink = a.get("href")
 
             df.loc[df['property'] == address, ['GoogleCacheLink']] = cacheLink
