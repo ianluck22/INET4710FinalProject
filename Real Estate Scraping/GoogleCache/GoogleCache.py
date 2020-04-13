@@ -1,11 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import os, time, csv
+import os, time, csv, sys
 import pandas as pd
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
-FILE_NUMBER = 1
+FILE_NUMBER = sys.argv[1]
 
 df = pd.read_feather(f"../../datafiles/metroAreaChunks/metroArea{FILE_NUMBER}.ft")
 list_of_addresses = df[df["GoogleCacheLink"] == ""]["property"].to_list()
@@ -14,6 +14,7 @@ driver = webdriver.Chrome()
 
 for address in tqdm(list_of_addresses):
     count_retry = 0
+    time.sleep(10)
     while True:
         try:
             count_retry += 1
@@ -33,7 +34,7 @@ for address in tqdm(list_of_addresses):
         except Exception as e:
             print ("Retrying because of", str(e))
             if count_retry < 3:
-                time.sleep(5)
+                time.sleep(10)
                 continue
             else:
                 cacheLink
