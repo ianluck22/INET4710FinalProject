@@ -8,7 +8,7 @@ import pandas as pd
 FILE_NUMBER = sys.argv[1]
 
 df = pickle.load(open(f"../../datafiles/metroAreaChunks/metroArea{FILE_NUMBER}.ft", "rb"))
-list_of_addresses = df[df["zpid"] == ""]["property"].to_list()
+list_of_addresses = df[df["status"] == "NEW"]["property"].to_list()
 
 for search_term in tqdm(list_of_addresses):
     time.sleep(5)
@@ -18,16 +18,22 @@ for search_term in tqdm(list_of_addresses):
         try:
             cacheData = getCacheResponse(url)
         except Exception as e:
+            df.loc[df['property'] == search_term, ['status']] = "Error"
             print (str(e))
             
         try:
             payload = getInformation(cacheData)
             del payload['listing_sub_type']
             for x in payload:
-                df.loc[df['property'] == search_term, [x]] = payload[x]
+                try:
+                    df.loc[df['property'] == search_term, [x]] = payload[x]
+                except:
+                    pass
+            df.loc[df['property'] == search_term, ['status']] = "Completed"
         except Exception as e:
+            df.loc[df['property'] == search_term, ['status']] = "Error"
             print (str(e))
-            
-
+    else:
+        df.loc[df['property'] == search_term, ['status']] = "Not on Zillow"
 
     pickle.dump(df, open(f"../../datafiles/metroAreaChunks/metroArea{FILE_NUMBER}.ft", "wb"))
