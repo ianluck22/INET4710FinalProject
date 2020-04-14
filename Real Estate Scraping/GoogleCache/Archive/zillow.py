@@ -47,4 +47,4 @@ urls = [
     "https://webcache.googleusercontent.com/search?q=cache:1QWyjnW3Y0EJ:https://www.zillow.com/homedetails/1802-Willowwood-Cir-Harker-Heights-TX-76548/49515512_zpid/+&cd=2&hl=en&ct=clnk&gl=us"
 ]
 
-print(getInformation(urls))
+print(getInformation(urls)[0])
