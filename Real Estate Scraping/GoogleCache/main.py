@@ -11,7 +11,7 @@ df = pickle.load(open(f"../../datafiles/metroAreaChunks/metroArea{FILE_NUMBER}.f
 list_of_addresses = df[df["status"] == "NEW"]["property"].to_list()
 
 for search_term in tqdm(list_of_addresses):
-    time.sleep(15)
+    time.sleep(10)
     url = getURL(search_term)
 
     if url != None:
@@ -20,7 +20,6 @@ for search_term in tqdm(list_of_addresses):
         except Exception as e:
             df.loc[df['property'] == search_term, ['status']] = "Error"
             print (str(e))
-        print (cacheData)
         try:
             payload = getInformation(cacheData)
             del payload['listing_sub_type']
