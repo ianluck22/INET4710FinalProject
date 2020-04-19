@@ -62,8 +62,12 @@ for url in tqdm(list_of_urls):
         df.loc[df['ZillowURL'] == url, ['status']] = "Completed"
 
     except Exception as e:
-        df.loc[df['property'] == url, ['status']] = "NEW"
-        print (str(e), content[:50])
+        if "block" in str(content) and "CAPTCHA" in str(content) and "unusual traffic from your computer network" in str(content):
+            df.loc[df['property'] == url, ['status']] = "NEW"
+            print ("Google Blocked Cache Hit")
+        else:
+            df.loc[df['property'] == url, ['status']] = "Error"
+            print ("Error Accessing")
     
     pickle.dump(df, open(f"../datafiles/BingScraped/metroArea{FILE_NUMBER}.ft", "wb"))
-    time.sleep(random.randint(10, 20))
+    #time.sleep(random.randint(10, 20))
