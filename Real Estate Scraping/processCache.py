@@ -49,7 +49,9 @@ FILE_NUMBER = sys.argv[1]
 df = pickle.load(open(f"../datafiles/BingScraped/metroArea{FILE_NUMBER}.ft", "rb"))
 list_of_urls = df[df["status"] == "NEW"]["ZillowURL"].to_list()
 
+counter = 0
 for url in tqdm(list_of_urls):
+    counter += 1
     content = getCacheResponse(url)
     try:
         payload = getInformation(content)
@@ -70,4 +72,7 @@ for url in tqdm(list_of_urls):
             print ("Error Accessing")
     
     pickle.dump(df, open(f"../datafiles/BingScraped/metroArea{FILE_NUMBER}.ft", "wb"))
+
+    if counter == 38:
+        break
     #time.sleep(random.randint(10, 20))
