@@ -65,4 +65,5 @@ for url in tqdm(list_of_urls):
         df.loc[df['property'] == url, ['status']] = "NEW"
         print (str(e), content[:50])
     
-    time.sleep(random.randint(5, 10))
+    pickle.dump(df, open(f"../datafiles/BingScraped/metroArea{FILE_NUMBER}.ft", "wb"))
+    time.sleep(random.randint(10, 20))
