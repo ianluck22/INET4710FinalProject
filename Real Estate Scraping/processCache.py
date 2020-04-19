@@ -63,10 +63,10 @@ for url in tqdm(list_of_urls):
 
     except Exception as e:
         if "block" in str(content) and "CAPTCHA" in str(content) and "unusual traffic from your computer network" in str(content):
-            df.loc[df['property'] == url, ['status']] = "NEW"
+            df.loc[df['ZillowURL'] == url, ['status']] = "NEW"
             print ("Google Blocked Cache Hit")
         else:
-            df.loc[df['property'] == url, ['status']] = "Error"
+            df.loc[df['ZillowURL'] == url, ['status']] = "Error"
             print ("Error Accessing")
     
     pickle.dump(df, open(f"../datafiles/BingScraped/metroArea{FILE_NUMBER}.ft", "wb"))
