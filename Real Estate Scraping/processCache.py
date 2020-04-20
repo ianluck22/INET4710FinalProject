@@ -75,4 +75,4 @@ for url in tqdm(list_of_urls):
 
     if counter == 38:
         break
-    #time.sleep(random.randint(10, 20))
+    time.sleep(4)
