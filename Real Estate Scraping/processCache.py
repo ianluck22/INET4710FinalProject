@@ -75,4 +75,4 @@ for url in tqdm(list_of_urls):
 
     if counter == 38:
         break
-    time.sleep(4)
+    # time.sleep(4)
