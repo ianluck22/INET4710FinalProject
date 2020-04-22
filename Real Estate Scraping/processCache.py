@@ -12,7 +12,7 @@ def getCacheResponse(url):
 def getInformation(data):
     soup = BeautifulSoup(data, 'html.parser')
     for link in soup.find_all("script", id="hdpApolloPreloadedData"):
-        data = (link.text)
+        data = (link.contents[0])
 
     data = json.loads(data)
     data1 = json.loads(data['apiCache'])
@@ -73,6 +73,7 @@ for url in tqdm(list_of_urls):
     
     pickle.dump(df, open(f"../datafiles/BingScraped/metroArea{FILE_NUMBER}.ft", "wb"))
 
-    if counter == 38:
-        break
+    if counter != 0 and counter % 38 == 0:
+        sleep_time = 60 * 60 + random.randint(5 * 60, 10 * 60)  # 1 h + 5 to 10 minutes
+        time.sleep(sleep_time)
     # time.sleep(4)
