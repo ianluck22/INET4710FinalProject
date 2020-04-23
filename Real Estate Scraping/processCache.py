@@ -47,7 +47,7 @@ def getInformation(data):
 
 FILE_NUMBER = sys.argv[1]
 df = pickle.load(open(f"../datafiles/BingScraped/metroArea{FILE_NUMBER}.ft", "rb"))
-df = df[df["ZillowURL"] != ""])
+df = df[df["ZillowURL"] != ""]
 list_of_urls = df[df["status"] == "NEW"]["ZillowURL"].to_list()
 
 counter = 0
