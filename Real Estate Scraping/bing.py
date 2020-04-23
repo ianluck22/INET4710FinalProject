@@ -11,8 +11,8 @@ def getURL(search_term):
     response = requests.get(search_url, headers=headers, params=params)
     response.raise_for_status()
     search_results = response.json()
-
-    for x in (search_results['webPages']['value']):
-        if 'zillow' in x['url']:
-            return (x['url'])
+    if 'webPages' in search_results:
+        for x in (search_results['webPages']['value']):
+            if 'zillow' in x['url']:
+                return (x['url'])
     return None
