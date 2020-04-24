@@ -47,7 +47,6 @@ def getInformation(data):
 
 FILE_NUMBER = sys.argv[1]
 df = pickle.load(open(f"../datafiles/BingScraped/metroArea{FILE_NUMBER}.ft", "rb"))
-df = df[df["ZillowURL"] != ""]
 list_of_urls = df[df["status"] == "NEW"]["ZillowURL"].to_list()
 
 counter = 0
@@ -75,6 +74,6 @@ for url in tqdm(list_of_urls):
     pickle.dump(df, open(f"../datafiles/BingScraped/metroArea{FILE_NUMBER}.ft", "wb"))
 
     if counter != 0 and counter % 38 == 0:
-        sleep_time = 60 * 60 + random.randint(15 * 60, 18 * 60)  # 1 h + Random sleep between 15 and 18 minutes
-        print ("Going to sleep")
+        sleep_time = 60 * (60 + 15) + random.randint(5 * 60, 10 * 60)  # 1 h + 5 to 10 minutes
         time.sleep(sleep_time)
+    # time.sleep(4)
