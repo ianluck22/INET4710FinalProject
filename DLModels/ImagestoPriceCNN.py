@@ -37,7 +37,7 @@ df.drop_duplicates("mediumImageLink", keep = "first", inplace = True)
 
 # In[4]:
 
-IMG_SIZE = 224
+IMG_SIZE = 128
 imageData = []
 
 for i, row in tqdm(df.iterrows(), total=len(df)):
@@ -97,7 +97,7 @@ vggModel.compile(loss='mean_absolute_error', optimizer='adam', metrics = ['mae']
 
 # In[ ]:
 
-vggModel.fit(X_train, y_train, batch_size=50, epochs=500, verbose=1, validation_split=0.1)
+vggModel.fit(X_train, y_train, batch_size=32, epochs=200, verbose=1, validation_split=0.1)
 
 
 # In[ ]:
